@@ -17,6 +17,10 @@ export const usersApi = {
   getAll: () => apiClient.get<AdminUser[]>('/support/admin/users').then((r) => r.data),
   toggleAdmin: (id: string) =>
     apiClient.patch(`/support/admin/users/${id}/toggle-admin`).then((r) => r.data),
+  suspendUser: (id: string, reason: string, suspendedUntil: string) =>
+    apiClient.patch(`/support/admin/users/${id}/suspend`, { reason, suspendedUntil }).then((r) => r.data),
+  unsuspendUser: (id: string) =>
+    apiClient.patch(`/support/admin/users/${id}/unsuspend`).then((r) => r.data),
 };
 
 export const authApi = {

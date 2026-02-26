@@ -27,6 +27,8 @@ export interface AdminUser {
   avatarUrl?: string;
   isAdmin: boolean;
   status: 'ACTIVE' | 'SUSPENDED' | 'DELETED';
+  suspendedUntil?: string | null;
+  suspendReason?: string | null;
   isProfileComplete: boolean;
   provider: string;
   createdAt: string;
