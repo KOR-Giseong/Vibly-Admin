@@ -140,12 +140,12 @@ export default function UsersPage() {
                       <div className="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center text-sm font-semibold text-violet-700 overflow-hidden flex-shrink-0">
                         {user.avatarUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
-                        ) : user.name[0]}
+                          <img src={user.avatarUrl} alt={user.nickname ?? user.name} className="w-full h-full object-cover" />
+                        ) : (user.nickname ?? user.name)[0]}
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{user.name}</p>
-                        <p className="text-gray-400 text-xs">{user.email ?? user.nickname ?? '-'}</p>
+                        <p className="font-medium text-gray-900">{user.nickname ?? user.name}</p>
+                        <p className="text-gray-400 text-xs">{user.email ?? '-'}</p>
                         {user.status === 'SUSPENDED' && (
                           <p className="text-red-400 text-[11px] mt-0.5">
                             {user.suspendReason} · {formatDate(user.suspendedUntil)}까지
@@ -186,7 +186,7 @@ export default function UsersPage() {
                     <div className="flex items-center justify-end gap-2">
                       {user.status === 'SUSPENDED' ? (
                         <button
-                          onClick={() => handleUnsuspend(user.id, user.name)}
+                          onClick={() => handleUnsuspend(user.id, user.nickname ?? user.name)}
                           className="text-xs font-medium px-3 py-1.5 rounded-lg text-green-600 hover:bg-green-50 transition"
                         >
                           정지 해제
@@ -203,7 +203,7 @@ export default function UsersPage() {
 
                       {user.status !== 'DELETED' && (
                         <button
-                          onClick={() => handleToggleAdmin(user.id, user.name, user.isAdmin)}
+                          onClick={() => handleToggleAdmin(user.id, user.nickname ?? user.name, user.isAdmin)}
                           className={`text-xs font-medium px-3 py-1.5 rounded-lg transition ${
                             user.isAdmin
                               ? 'text-red-500 hover:bg-red-50'
@@ -236,7 +236,7 @@ export default function UsersPage() {
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h2 className="text-lg font-bold text-gray-900">계정 정지</h2>
-                <p className="text-sm text-gray-500 mt-0.5">{suspendModal.user.name}님</p>
+                <p className="text-sm text-gray-500 mt-0.5">{suspendModal.user.nickname ?? suspendModal.user.name}님</p>
               </div>
               <button onClick={() => setSuspendModal(null)} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
             </div>

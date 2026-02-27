@@ -6,8 +6,15 @@ import { ReactNode } from 'react';
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: '대시보드', emoji: '📊' },
+  { href: '/dashboard/analytics', label: '통계 분석', emoji: '📈' },
   { href: '/dashboard/tickets', label: '고객 문의', emoji: '📨' },
   { href: '/dashboard/users', label: '사용자 관리', emoji: '👥' },
+  { href: '/dashboard/places', label: '장소 관리', emoji: '🏙️' },
+  { href: '/dashboard/checkins', label: '체크인 관리', emoji: '📍' },
+  { href: '/dashboard/reviews', label: '리뷰 관리', emoji: '⭐' },
+  { href: '/dashboard/community', label: '커뮤니티 관리', emoji: '💬' },
+  { href: '/dashboard/reports', label: '신고 관리', emoji: '⚠️' },
+  { href: '/dashboard/notices', label: '공지사항 관리', emoji: '📢' },
 ];
 
 function NavItem({ href, label, emoji }: { href: string; label: string; emoji: string }) {
