@@ -1,5 +1,5 @@
 import apiClient from './api';
-import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport } from './types';
+import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit } from './types';
 
 export const supportApi = {
   getAllTickets: () => apiClient.get<SupportTicket[]>('/support/admin/tickets').then((r) => r.data),
@@ -84,4 +84,11 @@ export const reportsApi = {
       .then((r) => r.data),
   resolve: (id: string, hidePost: boolean) =>
     apiClient.patch(`/community/admin/reports/${id}/resolve`, { hidePost }).then((r) => r.data),
+};
+
+export const creditsApi = {
+  getUsers: () =>
+    apiClient.get<AdminUserCredit[]>('/credits/admin/users').then((r) => r.data),
+  adjust: (userId: string, amount: number) =>
+    apiClient.patch<{ credits: number }>(`/credits/admin/users/${userId}/adjust`, { amount }).then((r) => r.data),
 };

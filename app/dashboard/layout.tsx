@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/community', label: '커뮤니티 관리', emoji: '💬' },
   { href: '/dashboard/reports', label: '신고 관리', emoji: '⚠️' },
   { href: '/dashboard/notices', label: '공지사항 관리', emoji: '📢' },
+  { href: '/dashboard/credits', label: '크레딧 관리', emoji: '🪙' },
 ];
 
 function NavItem({ href, label, emoji }: { href: string; label: string; emoji: string }) {

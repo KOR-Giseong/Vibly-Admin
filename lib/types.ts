@@ -115,6 +115,17 @@ export interface AdminPlace {
   };
 }
 
+export interface AdminUserCredit {
+  id: string;
+  name: string;
+  nickname?: string | null;
+  email?: string | null;
+  avatarUrl?: string | null;
+  credits: number;
+  status: 'ACTIVE' | 'SUSPENDED' | 'DELETED';
+  createdAt: string;
+}
+
 export interface AdminPaginated<T> {
   total: number;
   page: number;
