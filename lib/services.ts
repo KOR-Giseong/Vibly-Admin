@@ -1,5 +1,5 @@
 import apiClient from './api';
-import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit } from './types';
+import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport } from './types';
 
 export const supportApi = {
   getAllTickets: () => apiClient.get<SupportTicket[]>('/support/admin/tickets').then((r) => r.data),
@@ -91,4 +91,26 @@ export const creditsApi = {
     apiClient.get<AdminUserCredit[]>('/credits/admin/users').then((r) => r.data),
   adjust: (userId: string, amount: number) =>
     apiClient.patch<{ credits: number }>(`/credits/admin/users/${userId}/adjust`, { amount }).then((r) => r.data),
+};
+
+export const userReportsApi = {
+  getAll: (page = 1, limit = 30, onlyUnresolved = false) =>
+    apiClient
+      .get<{ items: AdminUserReport[]; total: number; page: number; hasNext: boolean }>(
+        `/couple/admin/user-reports?page=${page}&limit=${limit}&unresolved=${onlyUnresolved}`,
+      )
+      .then((r) => r.data),
+  resolve: (id: string) =>
+    apiClient.patch(`/couple/admin/user-reports/${id}/resolve`).then((r) => r.data),
+};
+
+export const couplesApi = {
+  getAll: (page = 1, limit = 30, status?: 'ACTIVE' | 'DISSOLVED') =>
+    apiClient
+      .get<{ items: AdminCouple[]; total: number; page: number; hasNext: boolean }>(
+        `/couple/admin/list?page=${page}&limit=${limit}${status ? `&status=${status}` : ''}`,
+      )
+      .then((r) => r.data),
+  dissolve: (id: string) =>
+    apiClient.delete(`/couple/admin/${id}`).then((r) => r.data),
 };

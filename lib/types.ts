@@ -177,11 +177,12 @@ export interface AdminNotice {
 
 // ─── Report ───────────────────────────────────────────────────────────────
 
-export type ReportReason = 'SPAM' | 'ABUSE' | 'ILLEGAL' | 'ADULT' | 'PRIVACY' | 'OTHER';
+export type ReportReason = 'SPAM' | 'ABUSE' | 'HARASSMENT' | 'ILLEGAL' | 'ADULT' | 'PRIVACY' | 'OTHER';
 
 export const REPORT_REASON_LABEL: Record<ReportReason, string> = {
   SPAM: '스팸/광고',
-  ABUSE: '욕설/협오',
+  ABUSE: '욕설/혐오',
+  HARASSMENT: '성희롱/괴롭힘',
   ILLEGAL: '불법 정보',
   ADULT: '성인/음란물',
   PRIVACY: '개인정보 침해',
@@ -205,4 +206,28 @@ export interface AdminReport {
     nickname?: string | null;
     name: string;
   };
+}
+
+export interface AdminUserReport {
+  id: string;
+  reason: ReportReason;
+  detail?: string | null;
+  isResolved: boolean;
+  createdAt: string;
+  reporter: { id: string; name: string; nickname?: string | null };
+  reported:  { id: string; name: string; nickname?: string | null; avatarUrl?: string | null };
+}
+
+// ─── Couple ───────────────────────────────────────────────────────────────────
+
+export interface AdminCouple {
+  id: string;
+  status: 'ACTIVE' | 'DISSOLVED';
+  creditShareEnabled: boolean;
+  anniversaryDate?: string | null;
+  createdAt: string;
+  dissolvedAt?: string | null;
+  user1: { id: string; name: string; nickname?: string | null; email?: string | null; avatarUrl?: string | null };
+  user2: { id: string; name: string; nickname?: string | null; email?: string | null; avatarUrl?: string | null };
+  _count: { datePlans: number; memories: number };
 }
