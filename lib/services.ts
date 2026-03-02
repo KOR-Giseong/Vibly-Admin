@@ -1,5 +1,5 @@
 import apiClient from './api';
-import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport } from './types';
+import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport, AdminSubscription, AppConfig, SubscriptionType } from './types';
 
 export const supportApi = {
   getAllTickets: () => apiClient.get<SupportTicket[]>('/support/admin/tickets').then((r) => r.data),
@@ -102,6 +102,28 @@ export const userReportsApi = {
       .then((r) => r.data),
   resolve: (id: string) =>
     apiClient.patch(`/couple/admin/user-reports/${id}/resolve`).then((r) => r.data),
+};
+
+export const subscriptionsApi = {
+  getAll: (page = 1, limit = 30) =>
+    apiClient
+      .get<{ items: AdminSubscription[]; total: number; page: number; hasNext: boolean }>(
+        `/credits/admin/subscriptions?page=${page}&limit=${limit}`,
+      )
+      .then((r) => r.data),
+  grant: (userId: string, type: SubscriptionType, durationDays: number) =>
+    apiClient
+      .post<AdminSubscription>('/credits/admin/subscriptions', { userId, type, durationDays })
+      .then((r) => r.data),
+  revoke: (userId: string) =>
+    apiClient.delete(`/credits/admin/subscriptions/${userId}`).then((r) => r.data),
+};
+
+export const appConfigApi = {
+  getAll: () =>
+    apiClient.get<Record<string, string>>('/credits/admin/app-config').then((r) => r.data),
+  set: (key: string, value: string) =>
+    apiClient.patch('/credits/admin/app-config', { key, value }).then((r) => r.data),
 };
 
 export const couplesApi = {

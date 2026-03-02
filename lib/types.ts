@@ -218,6 +218,34 @@ export interface AdminUserReport {
   reported:  { id: string; name: string; nickname?: string | null; avatarUrl?: string | null };
 }
 
+// ─── Subscription ─────────────────────────────────────────────────────────────
+
+export type SubscriptionType = 'MONTHLY' | 'YEARLY' | 'TRIAL' | 'ADMIN_GRANT';
+export type SubscriptionPlatform = 'IOS' | 'ANDROID' | 'WEB';
+
+export interface AdminSubscription {
+  id: string;
+  userId: string;
+  type: SubscriptionType;
+  platform: SubscriptionPlatform;
+  productId: string;
+  expiresAt: string;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string;
+    nickname?: string | null;
+    email?: string | null;
+    avatarUrl?: string | null;
+  };
+}
+
+export interface AppConfig {
+  key: string;
+  value: string;
+  updatedAt: string;
+}
+
 // ─── Couple ───────────────────────────────────────────────────────────────────
 
 export interface AdminCouple {

@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/notices', label: '공지사항 관리', emoji: '📢' },
   { href: '/dashboard/credits', label: '크레딧 관리', emoji: '🪙' },
   { href: '/dashboard/couples', label: '커플 관리', emoji: '💑' },
+  { href: '/dashboard/subscriptions', label: '구독 관리', emoji: '⭐' },
 ];
 
 function NavItem({ href, label, emoji }: { href: string; label: string; emoji: string }) {
