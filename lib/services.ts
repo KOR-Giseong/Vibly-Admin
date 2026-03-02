@@ -1,5 +1,5 @@
 import apiClient from './api';
-import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport, AdminSubscription, AppConfig, SubscriptionType } from './types';
+import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport, AdminSubscription, AdminCreditGrantLog, AppConfig, SubscriptionType } from './types';
 
 export const supportApi = {
   getAllTickets: () => apiClient.get<SupportTicket[]>('/support/admin/tickets').then((r) => r.data),
@@ -91,6 +91,12 @@ export const creditsApi = {
     apiClient.get<AdminUserCredit[]>('/credits/admin/users').then((r) => r.data),
   adjust: (userId: string, amount: number) =>
     apiClient.patch<{ credits: number }>(`/credits/admin/users/${userId}/adjust`, { amount }).then((r) => r.data),
+  bulkGrant: (amount: number, note?: string) =>
+    apiClient.post<{ count: number }>('/credits/admin/bulk-grant', { amount, note }).then((r) => r.data),
+  getGrantHistory: (page = 1, limit = 30) =>
+    apiClient.get<{ items: AdminCreditGrantLog[]; total: number; page: number; hasNext: boolean }>(
+      `/credits/admin/credit-history?page=${page}&limit=${limit}`,
+    ).then((r) => r.data),
 };
 
 export const userReportsApi = {
@@ -109,6 +115,12 @@ export const subscriptionsApi = {
     apiClient
       .get<{ items: AdminSubscription[]; total: number; page: number; hasNext: boolean }>(
         `/credits/admin/subscriptions?page=${page}&limit=${limit}`,
+      )
+      .then((r) => r.data),
+  getHistory: (page = 1, limit = 30) =>
+    apiClient
+      .get<{ items: AdminSubscription[]; total: number; page: number; hasNext: boolean }>(
+        `/credits/admin/subscriptions/history?page=${page}&limit=${limit}`,
       )
       .then((r) => r.data),
   grant: (userId: string, type: SubscriptionType, durationDays: number) =>

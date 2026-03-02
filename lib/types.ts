@@ -223,6 +223,14 @@ export interface AdminUserReport {
 export type SubscriptionType = 'MONTHLY' | 'YEARLY' | 'TRIAL' | 'ADMIN_GRANT';
 export type SubscriptionPlatform = 'IOS' | 'ANDROID' | 'WEB';
 
+type AdminUserMini = {
+  id: string;
+  name: string;
+  nickname?: string | null;
+  email?: string | null;
+  avatarUrl?: string | null;
+};
+
 export interface AdminSubscription {
   id: string;
   userId: string;
@@ -231,13 +239,22 @@ export interface AdminSubscription {
   productId: string;
   expiresAt: string;
   createdAt: string;
-  user: {
-    id: string;
-    name: string;
-    nickname?: string | null;
-    email?: string | null;
-    avatarUrl?: string | null;
-  };
+  adminId?: string | null;
+  admin?: Omit<AdminUserMini, 'avatarUrl'> | null;
+  user: AdminUserMini;
+}
+
+// 크레딧 지급 내역 (ADMIN_GRANT 트랜잭션)
+export interface AdminCreditGrantLog {
+  id: string;
+  userId: string;
+  amount: number;
+  type: string;
+  referenceId?: string | null;
+  note?: string | null;
+  createdAt: string;
+  user: AdminUserMini;
+  admin: Omit<AdminUserMini, 'avatarUrl'> | null;
 }
 
 export interface AppConfig {
