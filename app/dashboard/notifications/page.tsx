@@ -24,8 +24,9 @@ export default function NotificationsPage() {
       setResult({ sent: res.data.sent });
       setTitle('');
       setMessage('');
-    } catch (e: any) {
-      setResult({ error: e?.response?.data?.message ?? '전송에 실패했어요.' });
+    } catch (e: unknown) {
+      const msg = (e as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      setResult({ error: msg ?? '전송에 실패했어요.' });
     } finally {
       setSending(false);
     }
