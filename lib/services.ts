@@ -48,9 +48,33 @@ export const reviewsApi = {
 };
 
 export const authApi = {
+  // 관리자 전용 로그인 엔드포인트 (ADMIN_JWT_SECRET으로 서명된 토큰 발급)
   login: (email: string, password: string) =>
-    apiClient.post<{ accessToken: string }>('/auth/email/login', { email, password }).then((r) => r.data),
-  getMe: () => apiClient.get<{ id: string; name: string; isAdmin: boolean }>('/auth/me').then((r) => r.data),
+    apiClient.post<{ accessToken: string }>('/auth/admin/login', { email, password }).then((r) => r.data),
+  googleLogin: (idToken: string) =>
+    apiClient.post<{ accessToken: string }>('/auth/admin/google', { idToken }).then((r) => r.data),
+  kakaoLogin: (accessToken: string) =>
+    apiClient.post<{ accessToken: string }>('/auth/admin/kakao', { idToken: accessToken }).then((r) => r.data),
+};
+
+export interface AdminLog {
+  id: string;
+  adminId: string;
+  action: string;
+  targetType?: string;
+  targetId?: string;
+  detail?: Record<string, unknown>;
+  ip?: string;
+  createdAt: string;
+}
+
+export const adminLogApi = {
+  getLogs: (page = 1, limit = 30) =>
+    apiClient
+      .get<{ items: AdminLog[]; total: number; page: number; hasNext: boolean }>(
+        `/admin-logs?page=${page}&limit=${limit}`,
+      )
+      .then((r) => r.data),
 };
 
 export const communityApi = {

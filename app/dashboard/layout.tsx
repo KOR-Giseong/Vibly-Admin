@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { ReactNode, useEffect, useRef } from 'react';
+import { clearAdminToken } from '@/lib/api';
+
+const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30분
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: '대시보드', emoji: '📊' },
@@ -19,6 +22,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/couples', label: '커플 관리', emoji: '💑' },
   { href: '/dashboard/subscriptions', label: '구독 관리', emoji: '⭐' },
   { href: '/dashboard/notifications', label: '알림 전송', emoji: '🔔' },
+  { href: '/dashboard/admin-logs', label: '액션 로그', emoji: '📋' },
 ];
 
 function NavItem({ href, label, emoji }: { href: string; label: string; emoji: string }) {
@@ -40,8 +44,35 @@ function NavItem({ href, label, emoji }: { href: string; label: string; emoji: s
 }
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const lastActivityRef = useRef(0);
+
+  // 30분 비활성 시 자동 로그아웃
+  useEffect(() => {
+    lastActivityRef.current = Date.now();
+
+    const updateActivity = () => {
+      lastActivityRef.current = Date.now();
+    };
+
+    const events = ['click', 'keydown', 'mousemove', 'touchstart', 'scroll'];
+    events.forEach((e) => window.addEventListener(e, updateActivity, { passive: true }));
+
+    const interval = setInterval(() => {
+      if (Date.now() - lastActivityRef.current >= SESSION_TIMEOUT_MS) {
+        clearAdminToken();
+        router.push('/login');
+      }
+    }, 60_000); // 1분마다 체크
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, updateActivity));
+      clearInterval(interval);
+    };
+  }, [router]);
+
   const handleLogout = () => {
-    sessionStorage.removeItem('adminToken');
+    clearAdminToken();
     window.location.href = '/login';
   };
 
@@ -56,7 +87,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {NAV_ITEMS.map((item) => <NavItem key={item.href} {...item} />)}
         </nav>
 
