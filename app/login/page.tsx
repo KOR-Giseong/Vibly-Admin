@@ -13,8 +13,38 @@ const LOCK_SECONDS = 30;
 
 declare global {
   interface Window {
-    google: any;
-    Kakao: any;
+    google: {
+      accounts: {
+        id: {
+          initialize: (config: {
+            client_id: string;
+            callback: (response: { credential: string }) => void;
+          }) => void;
+          renderButton: (
+            element: HTMLElement,
+            options: {
+              theme?: string;
+              size?: string;
+              width?: number;
+              text?: string;
+              locale?: string;
+            },
+          ) => void;
+        };
+      };
+    };
+    Kakao: {
+      isInitialized: () => boolean;
+      init: (key: string) => void;
+      Auth: {
+        login: (options: {
+          throughTalk?: boolean;
+          scope?: string;
+          success: (authObj: { access_token: string }) => void;
+          fail: () => void;
+        }) => void;
+      };
+    };
   }
 }
 
