@@ -23,6 +23,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/subscriptions', label: '구독 관리', emoji: '⭐' },
   { href: '/dashboard/notifications', label: '알림 전송', emoji: '🔔' },
   { href: '/dashboard/admin-logs', label: '액션 로그', emoji: '📋' },
+  { href: '/dashboard/admin-chat', label: '관리자 채팅', emoji: '💬' },
 ];
 
 function NavItem({ href, label, emoji }: { href: string; label: string; emoji: string }) {

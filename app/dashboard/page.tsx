@@ -4,6 +4,44 @@ import { useEffect, useState } from 'react';
 import { statsApi } from '@/lib/services';
 import type { AdminStats } from '@/lib/types';
 
+const ADMIN_RULES = [
+  '관리자 계정은 본인 외 타인에게 공유할 수 없습니다.',
+  '사용자의 개인정보는 업무 목적 외 열람 및 사용이 금지됩니다.',
+  '관리자 권한을 이용한 부당 행위는 즉시 권한이 박탈됩니다.',
+  '모든 관리자 활동은 로그로 기록되며 정기적으로 감사됩니다.',
+  '서비스 운영 관련 정보를 외부에 무단 공개하지 마십시오.',
+  '보안 사고 발생 시 즉시 상급자에게 보고하십시오.',
+];
+
+function AdminRules() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bg-violet-50 border border-violet-100 rounded-2xl overflow-hidden">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-violet-600 text-lg">🛡️</span>
+          <span className="font-semibold text-violet-800 text-sm">관리자 수칙</span>
+          <span className="text-xs text-violet-500 bg-violet-100 px-2 py-0.5 rounded-full">{ADMIN_RULES.length}개 항목</span>
+        </div>
+        <span className="text-violet-400 text-sm">{open ? '▲' : '▼'}</span>
+      </button>
+      {open && (
+        <div className="px-5 pb-5 space-y-2">
+          {ADMIN_RULES.map((rule, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <span className="w-5 h-5 rounded-full bg-violet-600 text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">{i + 1}</span>
+              <p className="text-sm text-violet-900">{rule}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const CATEGORY_KO: Record<string, string> = {
   CAFE: '카페', RESTAURANT: '레스토랑', BAR: '바', PARK: '공원',
   CULTURAL: '문화', BOOKSTORE: '서점', BOWLING: '볼링', KARAOKE: '노래방',
@@ -48,6 +86,9 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-1">대시보드</h1>
         <p className="text-gray-500 text-sm">Vibly 서비스 현황을 한눈에 확인하세요.</p>
       </div>
+
+      {/* 관리자 수칙 */}
+      <AdminRules />
 
       {/* 통계 카드 */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

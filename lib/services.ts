@@ -1,5 +1,5 @@
 import apiClient from './api';
-import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport, AdminSubscription, AdminCreditGrantLog, AppConfig, SubscriptionType } from './types';
+import type { SupportTicket, AdminUser, AdminStats, AdminPlace, AdminCheckIn, AdminReview, AdminPaginated, AdminPost, AdminNotice, AdminReport, AdminUserCredit, AdminCouple, AdminUserReport, AdminSubscription, AdminCreditGrantLog, SubscriptionType } from './types';
 
 export const supportApi = {
   getAllTickets: () => apiClient.get<SupportTicket[]>('/support/admin/tickets').then((r) => r.data),
@@ -75,6 +75,27 @@ export const adminLogApi = {
         `/admin-logs?page=${page}&limit=${limit}`,
       )
       .then((r) => r.data),
+};
+
+export interface AdminChatMessage {
+  id: string;
+  authorId: string;
+  authorName: string;
+  content: string;
+  createdAt: string;
+}
+
+export const adminChatApi = {
+  getMessages: (page = 1, limit = 50) =>
+    apiClient
+      .get<{ items: AdminChatMessage[]; total: number; page: number; hasNext: boolean }>(
+        `/admin-messages?page=${page}&limit=${limit}`,
+      )
+      .then((r) => r.data),
+  sendMessage: (content: string) =>
+    apiClient.post<AdminChatMessage>('/admin-messages', { content }).then((r) => r.data),
+  deleteMessage: (id: string) =>
+    apiClient.delete(`/admin-messages/${id}`).then((r) => r.data),
 };
 
 export const communityApi = {
