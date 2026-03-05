@@ -102,7 +102,24 @@ function PostReportsTab() {
                   </div>
                   <p className="font-medium text-gray-900 truncate">{report.post.title}</p>
                   {report.detail && (
-                    <p className="text-sm text-gray-500 mt-1">상세: {report.detail}</p>
+                    <p className="text-sm text-gray-500 mt-1 bg-gray-50 rounded-lg px-3 py-2">
+                      {report.detail}
+                    </p>
+                  )}
+                  {report.imageUrls && report.imageUrls.length > 0 && (
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      {report.imageUrls.map((url, i) => (
+                        <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                          <NextImage
+                            src={url}
+                            alt={`신고 이미지 ${i + 1}`}
+                            width={80}
+                            height={80}
+                            className="rounded-lg object-cover border border-gray-200 hover:opacity-80 transition-opacity"
+                          />
+                        </a>
+                      ))}
+                    </div>
                   )}
                   <div className="flex gap-3 mt-2 text-xs text-gray-400">
                     <span>신고자: {report.user.nickname ?? report.user.name}</span>
@@ -242,6 +259,21 @@ function UserReportsTab() {
                     <p className="text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2 mb-2">
                       {report.detail}
                     </p>
+                  )}
+                  {report.imageUrls && report.imageUrls.length > 0 && (
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                      {report.imageUrls.map((url, i) => (
+                        <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                          <NextImage
+                            src={url}
+                            alt={`신고 이미지 ${i + 1}`}
+                            width={80}
+                            height={80}
+                            className="rounded-lg object-cover border border-gray-200 hover:opacity-80 transition-opacity"
+                          />
+                        </a>
+                      ))}
+                    </div>
                   )}
 
                   <div className="flex gap-3 text-xs text-gray-400">

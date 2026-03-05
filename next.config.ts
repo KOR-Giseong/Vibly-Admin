@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  images: {
+    unoptimized: true, // R2, Render 등 외부 CDN 이미지 최적화 없이 직접 로드
+  },
   async headers() {
     return [
       {

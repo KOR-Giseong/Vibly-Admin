@@ -193,6 +193,7 @@ export interface AdminReport {
   id: string;
   reason: ReportReason;
   detail?: string | null;
+  imageUrls?: string[];
   isResolved: boolean;
   createdAt: string;
   post: {
@@ -212,6 +213,7 @@ export interface AdminUserReport {
   id: string;
   reason: ReportReason;
   detail?: string | null;
+  imageUrls?: string[];
   isResolved: boolean;
   createdAt: string;
   reporter: { id: string; name: string; nickname?: string | null };
