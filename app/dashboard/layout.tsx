@@ -97,7 +97,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className="p-6 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Logo2.png" alt="Vibly" className="h-8 w-auto object-contain" />
+            <img src="/Logo2.png" alt="Vibly" className="h-8 w-auto object-contain rounded-xl" />
           </div>
           {/* 모바일 닫기 버튼 */}
           <button
@@ -139,7 +139,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </svg>
           </button>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/Logo2.png" alt="Vibly" className="h-7 w-auto object-contain" />
+          <img src="/Logo2.png" alt="Vibly" className="h-7 w-auto object-contain rounded-xl" />
         </header>
 
         <main className="flex-1 p-4 md:p-8">{children}</main>
