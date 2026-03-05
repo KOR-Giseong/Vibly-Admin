@@ -119,6 +119,8 @@ export default function LoginPage() {
     if (lockRemaining > 0 || !window.Kakao?.Auth) return;
     setError('');
     window.Kakao.Auth.login({
+      throughTalk: false, // 카카오톡 앱 대신 브라우저 팝업 사용
+      scope: 'profile_nickname,account_email',
       success: async (authObj: { access_token: string }) => {
         setLoading(true);
         try {
