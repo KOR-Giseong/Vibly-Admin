@@ -7,6 +7,8 @@ import { setAdminToken } from '@/lib/api';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '';
 const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY ?? '';
+const APPLE_CLIENT_ID = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID ?? '';
+const APPLE_REDIRECT_URI = process.env.NEXT_PUBLIC_APPLE_REDIRECT_URI ?? (typeof window !== 'undefined' ? window.location.origin + '/login' : '');
 
 const MAX_ATTEMPTS = 5;
 const LOCK_SECONDS = 30;
@@ -43,6 +45,20 @@ declare global {
           success: (authObj: { access_token: string }) => void;
           fail: () => void;
         }) => void;
+      };
+    };
+    AppleID: {
+      auth: {
+        init: (config: {
+          clientId: string;
+          scope: string;
+          redirectURI: string;
+          usePopup: boolean;
+        }) => void;
+        signIn: () => Promise<{
+          authorization: { id_token: string; code: string };
+          user?: { name?: { firstName?: string; lastName?: string }; email?: string };
+        }>;
       };
     };
   }
@@ -97,6 +113,17 @@ export default function LoginPage() {
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(KAKAO_JS_KEY);
     }
+  };
+
+  // Apple SDK 초기화
+  const initApple = () => {
+    if (!APPLE_CLIENT_ID || !window.AppleID) return;
+    window.AppleID.auth.init({
+      clientId: APPLE_CLIENT_ID,
+      scope: 'email name',
+      redirectURI: APPLE_REDIRECT_URI || window.location.origin + '/login',
+      usePopup: true,
+    });
   };
 
   const onLoginSuccess = (accessToken: string) => {
@@ -168,6 +195,22 @@ export default function LoginPage() {
     });
   };
 
+  const handleAppleLogin = async () => {
+    if (lockRemaining > 0 || !window.AppleID) return;
+    setError('');
+    setLoading(true);
+    try {
+      const result = await window.AppleID.auth.signIn();
+      const { accessToken } = await authApi.appleLogin(result.authorization.id_token);
+      onLoginSuccess(accessToken);
+    } catch (e) {
+      if ((e as { error?: string })?.error === 'popup_closed_by_user') return; // 사용자가 팝업 닫음
+      handleLoginError('Apple 로그인에 실패했습니다. 관리자 계정을 확인해 주세요.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const isLocked = lockRemaining > 0;
 
   return (
@@ -183,6 +226,13 @@ export default function LoginPage() {
         <Script
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
           onLoad={initKakao}
+          strategy="afterInteractive"
+        />
+      )}
+      {APPLE_CLIENT_ID && (
+        <Script
+          src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+          onLoad={initApple}
           strategy="afterInteractive"
         />
       )}
@@ -239,7 +289,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {(GOOGLE_CLIENT_ID || KAKAO_JS_KEY) && (
+          {(GOOGLE_CLIENT_ID || KAKAO_JS_KEY || APPLE_CLIENT_ID) && (
             <>
               <div className="flex items-center gap-3 my-4">
                 <div className="flex-1 h-px bg-gray-200" />
@@ -265,6 +315,19 @@ export default function LoginPage() {
                       <path d="M12 3C6.48 3 2 6.48 2 10.8c0 2.76 1.72 5.19 4.32 6.68-.18.65-.65 2.38-.74 2.73-.12.44.16.43.34.31.14-.09 2.24-1.52 3.15-2.14.6.09 1.22.14 1.93.14 5.52 0 10-3.48 10-7.8S17.52 3 12 3z"/>
                     </svg>
                     카카오 로그인
+                  </button>
+                )}
+
+                {APPLE_CLIENT_ID && (
+                  <button
+                    onClick={handleAppleLogin}
+                    disabled={loading || isLocked}
+                    className="w-full py-2.5 bg-black text-white rounded-xl font-semibold text-sm hover:bg-gray-900 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    <svg width="17" height="17" viewBox="0 0 814 1000" fill="currentColor">
+                      <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.3-155.5-127.2C46.7 790.7 0 663 0 541.8c0-207.8 135.6-318.3 269.6-318.3 71.2 0 130.3 46.7 175.1 46.7 43.5 0 111.7-49.3 193.5-49.3zM498.4 92.3c-.6 0-1.2 0-2 .1C490 36.7 420.3 0 360.4 0c-52.8 0-106.7 33.1-144.2 84.5-32.4 45.6-55.9 118.3-28.5 183.7 6.7 16.3 14.8 22.5 22.6 22.5 8.4 0 18.2-7.2 25.3-14.5 33-34.5 66.6-91.6 66.6-152.2l.6-7.3c10-2 20.1-2.7 29.7-2.7 55.7 0 117.3 30.9 148 75.3z"/>
+                    </svg>
+                    Apple로 로그인
                   </button>
                 )}
               </div>
