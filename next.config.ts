@@ -18,11 +18,11 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://apis.google.com https://t1.kakaocdn.net https://k.kakaocdn.net",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://apis.google.com https://t1.kakaocdn.net https://k.kakaocdn.net https://appleid.cdn-apple.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self' https://vibly-backend-jo12.onrender.com https://accounts.google.com",
+              "connect-src 'self' https://vibly-backend-jo12.onrender.com https://accounts.google.com https://appleid.apple.com",
               "frame-src https://accounts.google.com",
               "frame-ancestors 'none'",
             ].join("; "),
