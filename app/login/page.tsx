@@ -193,24 +193,30 @@ export default function LoginPage() {
       return;
     }
     setError('');
-    window.Kakao.Auth.login({
-      throughTalk: false, // 카카오톡 앱 대신 브라우저 팝업 사용
-      scope: 'profile_nickname,account_email',
-      success: async (authObj: { access_token: string }) => {
-        setLoading(true);
-        try {
-          const { accessToken } = await authApi.kakaoLogin(authObj.access_token);
-          onLoginSuccess(accessToken);
-        } catch {
-          handleLoginError('카카오 로그인에 실패했습니다. 관리자 계정을 확인해 주세요.');
-        } finally {
-          setLoading(false);
-        }
-      },
-      fail: () => {
-        handleLoginError('카카오 로그인에 실패했습니다.');
-      },
-    });
+    try {
+      window.Kakao.Auth.login({
+        throughTalk: false,
+        scope: 'profile_nickname,account_email',
+        success: async (authObj: { access_token: string }) => {
+          setLoading(true);
+          try {
+            const { accessToken } = await authApi.kakaoLogin(authObj.access_token);
+            onLoginSuccess(accessToken);
+          } catch {
+            handleLoginError('카카오 로그인에 실패했습니다. 관리자 계정을 확인해 주세요.');
+          } finally {
+            setLoading(false);
+          }
+        },
+        fail: (err: unknown) => {
+          console.error('Kakao login fail:', err);
+          handleLoginError('카카오 로그인에 실패했습니다. 도메인이 등록되지 않았을 수 있습니다.');
+        },
+      });
+    } catch (e) {
+      console.error('Kakao.Auth.login error:', e);
+      setError('카카오 로그인 오류가 발생했습니다. 콘솔을 확인해 주세요.');
+    }
   };
 
   const handleAppleLogin = async () => {
