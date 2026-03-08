@@ -192,6 +192,9 @@ export default function LoginPage() {
       setError('카카오 SDK가 아직 로드되지 않았습니다. 잠시 후 다시 시도해 주세요.');
       return;
     }
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_JS_KEY);
+    }
     setError('');
     try {
       window.Kakao.Auth.login({
@@ -214,7 +217,7 @@ export default function LoginPage() {
       });
     } catch (e) {
       console.error('Kakao.Auth.login error:', e);
-      setError('카카오 로그인 오류가 발생했습니다. 콘솔을 확인해 주세요.');
+      setError('카카오 오류: ' + (e instanceof Error ? e.message : String(e)));
     }
   };
 
