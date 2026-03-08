@@ -173,7 +173,11 @@ export default function LoginPage() {
   };
 
   const handleKakaoLogin = () => {
-    if (lockRemaining > 0 || !window.Kakao?.Auth) return;
+    if (lockRemaining > 0) return;
+    if (!window.Kakao || !window.Kakao.Auth) {
+      setError('카카오 SDK가 아직 로드되지 않았습니다. 잠시 후 다시 시도해 주세요.');
+      return;
+    }
     setError('');
     window.Kakao.Auth.login({
       throughTalk: false, // 카카오톡 앱 대신 브라우저 팝업 사용
@@ -196,7 +200,11 @@ export default function LoginPage() {
   };
 
   const handleAppleLogin = async () => {
-    if (lockRemaining > 0 || !window.AppleID) return;
+    if (lockRemaining > 0) return;
+    if (!window.AppleID) {
+      setError('Apple SDK가 아직 로드되지 않았습니다. 잠시 후 다시 시도해 주세요.');
+      return;
+    }
     setError('');
     setLoading(true);
     try {
