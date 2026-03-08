@@ -55,6 +55,8 @@ export const authApi = {
     apiClient.post<{ accessToken: string }>('/auth/admin/google', { idToken }).then((r) => r.data),
   kakaoLogin: (accessToken: string) =>
     apiClient.post<{ accessToken: string }>('/auth/admin/kakao', { idToken: accessToken }).then((r) => r.data),
+  kakaoCodeLogin: (code: string, redirectUri: string) =>
+    apiClient.post<{ accessToken: string }>('/auth/admin/kakao-code', { idToken: code, redirectUri }).then((r) => r.data),
   appleLogin: (idToken: string) =>
     apiClient.post<{ accessToken: string }>('/auth/admin/apple', { idToken }).then((r) => r.data),
 };

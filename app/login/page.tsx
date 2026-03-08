@@ -107,14 +107,6 @@ export default function LoginPage() {
     }
   };
 
-  // Kakao SDK 초기화
-  const initKakao = () => {
-    if (!KAKAO_JS_KEY || !window.Kakao) return;
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(KAKAO_JS_KEY);
-    }
-  };
-
   // Apple SDK 초기화
   const initApple = () => {
     if (!APPLE_CLIENT_ID || !window.AppleID) return;
@@ -188,37 +180,39 @@ export default function LoginPage() {
 
   const handleKakaoLogin = () => {
     if (lockRemaining > 0) return;
-    if (!window.Kakao || !window.Kakao.Auth) {
-      setError('카카오 SDK가 아직 로드되지 않았습니다. 잠시 후 다시 시도해 주세요.');
-      return;
-    }
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(KAKAO_JS_KEY);
-    }
-    setError('');
-    try {
-      window.Kakao.Auth.login({
-        throughTalk: false,
-        scope: 'profile_nickname,account_email',
-        success: async (authObj: { access_token: string }) => {
-          setLoading(true);
-          try {
-            const { accessToken } = await authApi.kakaoLogin(authObj.access_token);
-            onLoginSuccess(accessToken);
-          } catch {
-            handleLoginError('카카오 로그인에 실패했습니다. 관리자 계정을 확인해 주세요.');
-          } finally {
-            setLoading(false);
-          }
-        },
-        fail: () => {
-          handleLoginError('카카오 로그인에 실패했습니다. 도메인이 등록되지 않았을 수 있습니다.');
-        },
-      });
-    } catch (e) {
-      console.error('Kakao.Auth.login error:', e);
-      setError('카카오 오류: ' + (e instanceof Error ? e.message : String(e)));
-    }
+    const redirectUri = window.location.origin + '/kakao-callback';
+    const kakaoAuthUrl =
+      `https://kauth.kakao.com/oauth/authorize` +
+      `?response_type=code` +
+      `&client_id=${KAKAO_JS_KEY}` +
+      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+      `&scope=profile_nickname%2Caccount_email` +
+      `&through_talk=false`;
+
+    const popup = window.open(kakaoAuthUrl, 'kakaoLogin', 'width=500,height=600,top=200,left=200');
+
+    const onMessage = async (e: MessageEvent) => {
+      if (e.origin !== window.location.origin) return;
+      if (e.data?.type === 'KAKAO_CODE') {
+        window.removeEventListener('message', onMessage);
+        popup?.close();
+        setLoading(true);
+        setError('');
+        try {
+          const { accessToken } = await authApi.kakaoCodeLogin(e.data.code, redirectUri);
+          onLoginSuccess(accessToken);
+        } catch (err: unknown) {
+          const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+          handleLoginError(msg ?? '카카오 로그인에 실패했습니다. 관리자 계정을 확인해 주세요.');
+        } finally {
+          setLoading(false);
+        }
+      } else if (e.data?.type === 'KAKAO_ERROR') {
+        window.removeEventListener('message', onMessage);
+        setError('카카오 로그인에 실패했습니다: ' + e.data.error);
+      }
+    };
+    window.addEventListener('message', onMessage);
   };
 
   const handleAppleLogin = async () => {
@@ -252,13 +246,7 @@ export default function LoginPage() {
           strategy="afterInteractive"
         />
       )}
-      {KAKAO_JS_KEY && (
-        <Script
-          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-          onLoad={initKakao}
-          strategy="afterInteractive"
-        />
-      )}
+      {/* Kakao SDK 불필요 - REST API OAuth 팝업 방식 사용 */}
       {/* Apple SDK는 useEffect에서 직접 로드 */}
 
       <div className="min-h-screen bg-gradient-to-br from-violet-50 to-pink-50 flex items-center justify-center p-4">
