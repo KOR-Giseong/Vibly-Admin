@@ -208,8 +208,7 @@ export default function LoginPage() {
             setLoading(false);
           }
         },
-        fail: (err: unknown) => {
-          console.error('Kakao login fail:', err);
+        fail: () => {
           handleLoginError('카카오 로그인에 실패했습니다. 도메인이 등록되지 않았을 수 있습니다.');
         },
       });
