@@ -195,3 +195,23 @@ export const couplesApi = {
   dissolve: (id: string) =>
     apiClient.delete(`/couple/admin/${id}`).then((r) => r.data),
 };
+
+export interface AdminDeletedAccount {
+  id: string;
+  provider: string;
+  providerId: string | null;
+  email: string | null;
+  deletedAt: string;
+  canRejoinAt: string;
+}
+
+export const deletedAccountsApi = {
+  getAll: (page = 1, limit = 30) =>
+    apiClient
+      .get<{ items: AdminDeletedAccount[]; total: number; page: number; hasNext: boolean }>(
+        `/support/admin/deleted-accounts?page=${page}&limit=${limit}`,
+      )
+      .then((r) => r.data),
+  unlock: (id: string) =>
+    apiClient.delete(`/support/admin/deleted-accounts/${id}`).then((r) => r.data),
+};

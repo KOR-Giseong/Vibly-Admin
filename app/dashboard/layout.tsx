@@ -24,6 +24,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/notifications', label: '알림 전송', emoji: '🔔' },
   { href: '/dashboard/admin-logs', label: '액션 로그', emoji: '📋' },
   { href: '/dashboard/admin-chat', label: '관리자 채팅', emoji: '💬' },
+  { href: '/dashboard/deleted-accounts', label: '탈퇴 계정 관리', emoji: '🔓' },
 ];
 
 function NavItem({ href, label, emoji, onClose }: { href: string; label: string; emoji: string; onClose?: () => void }) {
