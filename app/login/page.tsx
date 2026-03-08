@@ -180,7 +180,7 @@ export default function LoginPage() {
 
   const handleKakaoLogin = () => {
     if (lockRemaining > 0) return;
-    const redirectUri = window.location.origin + '/kakao-callback';
+    const redirectUri = (process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin) + '/kakao-callback';
     const kakaoAuthUrl =
       `https://kauth.kakao.com/oauth/authorize` +
       `?response_type=code` +
