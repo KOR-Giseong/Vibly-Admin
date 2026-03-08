@@ -126,6 +126,20 @@ export default function LoginPage() {
     });
   };
 
+  // Apple SDK 직접 로드 (Script onLoad 신뢰성 문제 방지)
+  useEffect(() => {
+    if (!APPLE_CLIENT_ID) return;
+    if (window.AppleID) { initApple(); return; }
+    const script = document.createElement('script');
+    script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
+    script.async = true;
+    script.onload = () => initApple();
+    script.onerror = () => console.error('Apple SDK 스크립트 로드 실패');
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onLoginSuccess = (accessToken: string) => {
     setAdminToken(accessToken);
     window.location.href = '/dashboard';
@@ -237,13 +251,7 @@ export default function LoginPage() {
           strategy="afterInteractive"
         />
       )}
-      {APPLE_CLIENT_ID && (
-        <Script
-          src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
-          onLoad={initApple}
-          strategy="afterInteractive"
-        />
-      )}
+      {/* Apple SDK는 useEffect에서 직접 로드 */}
 
       <div className="min-h-screen bg-gradient-to-br from-violet-50 to-pink-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
