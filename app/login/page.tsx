@@ -187,7 +187,8 @@ export default function LoginPage() {
       `&client_id=${KAKAO_JS_KEY}` +
       `&redirect_uri=${encodeURIComponent(redirectUri)}` +
       `&scope=profile_nickname%2Caccount_email` +
-      `&through_talk=false`;
+      `&through_talk=false` +
+      `&prompt=login`;
 
     const popup = window.open(kakaoAuthUrl, 'kakaoLogin', 'width=500,height=600,top=200,left=200');
 
