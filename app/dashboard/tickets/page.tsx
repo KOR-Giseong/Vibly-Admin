@@ -119,6 +119,7 @@ export default function TicketsPage() {
       <p className="text-gray-500 text-sm mb-6">사용자 문의 목록입니다. 클릭하여 답변하세요.</p>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
@@ -172,6 +173,7 @@ export default function TicketsPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* 모달 */}

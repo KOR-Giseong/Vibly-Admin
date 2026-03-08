@@ -77,7 +77,7 @@ export default function NoticesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 mb-1">공지사항 관리</h1>
           <p className="text-gray-500 text-sm">앱 사용자에게 공지사항을 작성하고 관리하세요.</p>
@@ -163,6 +163,7 @@ export default function NoticesPage() {
             </button>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
@@ -238,6 +239,7 @@ export default function NoticesPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

@@ -115,6 +115,7 @@ export default function UsersPage() {
       />
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
@@ -220,6 +221,7 @@ export default function UsersPage() {
             })}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* ── 계정 정지 모달 ────────────────────────────────────────────────────── */}

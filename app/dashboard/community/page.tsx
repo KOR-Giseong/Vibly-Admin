@@ -106,6 +106,7 @@ export default function CommunityPage() {
         ) : filtered.length === 0 ? (
           <div className="flex items-center justify-center py-20 text-gray-400">게시글이 없습니다.</div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
@@ -197,6 +198,7 @@ export default function CommunityPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

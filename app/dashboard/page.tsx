@@ -156,7 +156,7 @@ export default function DashboardPage() {
                   <p className="text-sm font-medium text-gray-800 truncate">{place.name}</p>
                   <p className="text-xs text-gray-400">{CATEGORY_KO[place.category] ?? place.category} · ⭐ {place.rating.toFixed(1)}</p>
                 </div>
-                <div className="text-right shrink-0 w-40">
+                <div className="text-right shrink-0 w-24 sm:w-40">
                   <MiniBar value={place._count.checkIns} max={maxCheckins} color="bg-green-400" />
                   <p className="text-xs text-gray-400 mt-1">체크인 {place._count.checkIns} · 북마크 {place._count.bookmarks}</p>
                 </div>

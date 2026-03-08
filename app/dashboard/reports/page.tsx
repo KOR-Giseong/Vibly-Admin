@@ -305,7 +305,7 @@ export default function ReportsPage() {
   const [mainTab, setMainTab] = useState<MainTab>('posts');
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">신고 관리</h1>
         <p className="text-sm text-gray-500 mt-1">사용자 신고를 검토하고 처리합니다.</p>

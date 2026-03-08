@@ -131,7 +131,7 @@ export default function CreditsPage() {
   return (
     <div>
       {/* ── 헤더 ─────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">크레딧 관리</h1>
           <p className="text-gray-500 text-sm mt-1">유저별 크레딧 잔액 조회, 지급/차감 및 전체 이벤트 지급을 관리합니다.</p>
@@ -174,6 +174,7 @@ export default function CreditsPage() {
             {usersLoading ? (
               <div className="py-16 text-center text-gray-400 text-sm">불러오는 중...</div>
             ) : (
+              <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50">
@@ -238,6 +239,7 @@ export default function CreditsPage() {
                   })}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
         </>
@@ -253,6 +255,7 @@ export default function CreditsPage() {
           {histLoading ? (
             <div className="py-16 text-center text-gray-400 text-sm">불러오는 중...</div>
           ) : (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
@@ -317,6 +320,7 @@ export default function CreditsPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
 
           {/* 페이지네이션 */}

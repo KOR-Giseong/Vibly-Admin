@@ -50,6 +50,7 @@ export default function AdminLogsPage() {
         ) : logs.length === 0 ? (
           <div className="p-12 text-center text-gray-400">액션 로그가 없습니다.</div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50">
@@ -100,11 +101,12 @@ export default function AdminLogsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 
       {/* 페이지네이션 */}
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 mt-4">
         <span className="text-sm text-gray-500">
           {(page - 1) * limit + 1}–{Math.min(page * limit, total)} / {total}건
         </span>

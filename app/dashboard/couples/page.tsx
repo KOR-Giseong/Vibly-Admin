@@ -69,7 +69,7 @@ export default function CouplesPage() {
   return (
     <div className="space-y-6">
       {/* 헤더 */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">💑 커플 관리</h1>
           <p className="text-sm text-gray-500 mt-1">전체 {total.toLocaleString()}쌍</p>
@@ -103,6 +103,7 @@ export default function CouplesPage() {
             <p>커플 데이터가 없습니다</p>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
@@ -213,6 +214,7 @@ export default function CouplesPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

@@ -76,7 +76,7 @@ export default function PlacesPage() {
           placeholder="장소명, 주소 검색..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-48 px-4 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
+          className="flex-1 min-w-0 w-full px-4 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
         />
         <select
           value={categoryFilter}

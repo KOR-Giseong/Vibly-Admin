@@ -78,7 +78,7 @@ export default function ReviewsPage() {
           placeholder="사용자명, 장소명, 리뷰 내용 검색..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-48 px-4 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
+          className="flex-1 min-w-0 w-full px-4 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
         />
         <div className="flex bg-gray-100 rounded-xl p-1 text-sm gap-0.5">
           {[0, 1, 2, 3, 4, 5].map((r) => (

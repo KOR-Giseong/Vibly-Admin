@@ -101,6 +101,7 @@ export default function DeletedAccountsPage() {
         ) : filtered.length === 0 ? (
           <div className="flex justify-center items-center py-20 text-gray-400">탈퇴 계정이 없어요.</div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
@@ -152,6 +153,7 @@ export default function DeletedAccountsPage() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

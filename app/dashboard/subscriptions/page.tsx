@@ -190,7 +190,7 @@ export default function SubscriptionsPage() {
   return (
     <div>
       {/* ── 헤더 ─────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">구독 관리</h1>
           <p className="text-gray-500 text-sm mt-1">프리미엄 구독 부여·취소·내역 및 앱 설정을 관리합니다.</p>
@@ -228,6 +228,7 @@ export default function SubscriptionsPage() {
           {subsLoading ? (
             <div className="py-16 text-center text-gray-400 text-sm">불러오는 중...</div>
           ) : (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
@@ -264,6 +265,7 @@ export default function SubscriptionsPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
 
           {subsTotalPages > 1 && (
@@ -290,6 +292,7 @@ export default function SubscriptionsPage() {
           {histLoading ? (
             <div className="py-16 text-center text-gray-400 text-sm">불러오는 중...</div>
           ) : (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
@@ -346,6 +349,7 @@ export default function SubscriptionsPage() {
                 })}
               </tbody>
             </table>
+            </div>
           )}
 
           {histTotalPages > 1 && (
